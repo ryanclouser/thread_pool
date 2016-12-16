@@ -157,9 +157,10 @@ public:
 			pool.push_back(std::move(std::thread(std::bind(&thread_pool::work_thread, this))));
 		}
 
-		if(!queue.empty())
+		lock.unlock();
+
+		if(!empty())
 		{
-			lock.unlock();
 			cv.notify_all();
 		}
 	}
